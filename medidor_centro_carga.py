@@ -56,9 +56,12 @@ class TuyaMedidor(hass.Hass):
 
     def decode_phase_a(self, value_base64):
         decoded = base64.b64decode(value_base64)
+        signo_negativo = decoded[0] == 0x01
         voltage_raw = int.from_bytes(decoded[13:15], 'big')
         current_raw = int.from_bytes(decoded[11:13], 'big')
         active_power_raw = int.from_bytes(decoded[2:4], 'big')
+        if signo_negativo:
+            active_power_raw *= -1
         voltage = round(voltage_raw * 0.1, 1)
         current = round(current_raw * 0.001, 3)
         active_power = round(active_power_raw, 1)

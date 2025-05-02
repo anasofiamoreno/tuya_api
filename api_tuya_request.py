@@ -71,12 +71,17 @@ def get_device_status(token: str, timestamp: str):
 def decode_phase_a(value_base64: str):
     decoded = base64.b64decode(value_base64)
 
+    signo_negativo = decoded[0] == 0x01
+
     voltage_raw = int.from_bytes(decoded[13:15], 'big')
-    current_raw = int.from_bytes(decoded[11:13], 'big')  # 0x019F = 415
-    active_power_raw = int.from_bytes(decoded[2:4], 'big')  # 0x0043 = 67
+    current_raw = int.from_bytes(decoded[11:13], 'big')
+    active_power_raw = int.from_bytes(decoded[2:4], 'big')
+
+    if signo_negativo:
+        active_power_raw *= -1
 
     voltage = round(voltage_raw * 0.1, 1)
-    current = round(current_raw * 0.001, 3)
+    current = round(current_raw * 0.001, 2)
     active_power = round(active_power_raw, 1)
 
     return voltage, current, active_power
