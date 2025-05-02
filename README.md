@@ -2,6 +2,8 @@
 
 This project allows you to extract real-time power data (voltage, current, active power, energy consumption) from Tuya-compatible smart meters (like the TOMZN DDS238-1-W1) using the Tuya Cloud API, and expose them as sensors in Home Assistant using **AppDaemon**.
 
+![Texto alternativo](HA_BOARD.png)
+
 ---
 
 ## 🔧 Requirements
